@@ -53,12 +53,12 @@ export const SolutionScene: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ opacity: exitOpacity }}>
-      <Background accentX={0.5} accentY={0.5} />
+      <Background variant="strong" />
 
-      {/* Extra central radial glow */}
+      {/* Central gold radial glow — expands as logo scales in */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(ellipse 70% 55% at 50% 50%, rgba(124,58,237,${glowOpacity * 0.3}) 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse 70% 55% at 50% 50%, rgba(232,184,73,${glowOpacity * 0.18}) 0%, transparent 70%)`,
           pointerEvents: "none",
         }}
       />
@@ -89,7 +89,7 @@ export const SolutionScene: React.FC = () => {
               alignItems: "center",
               justifyContent: "center",
               fontSize: 50,
-              boxShadow: `0 0 90px rgba(124,58,237,0.65), 0 0 180px rgba(124,58,237,0.25)`,
+              boxShadow: `0 0 0 1px rgba(232,184,73,0.45), 0 0 80px rgba(232,184,73,0.60), 0 0 180px rgba(232,184,73,0.22)`,
             }}
           >
             {CONTENT.logoEmoji}

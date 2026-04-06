@@ -16,55 +16,68 @@ export const CTAScene: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // ── Logo: tiny → full (ref Phase 1 — starts as tiny icon in darkness) ────────
   const logoScale = spring({
-    fps, frame,
-    config: { damping: 75, stiffness: 100 },
+    fps,
+    frame,
+    config: { damping: 55, stiffness: 75, mass: 1.1 },
+    durationInFrames: 38,
+  });
+  const logoOpacity = interpolate(frame, [0, 20], [0, 1], {
+    extrapolateRight: "clamp",
+  });
+  const glowScale = spring({
+    fps,
+    frame: Math.max(0, frame - 8),
+    config: { damping: 80, stiffness: 40 },
+    durationInFrames: 50,
+  });
+
+  // ── Company name (ref: "Doks.ai" large text) ──────────────────────────────────
+  const nameOpacity = interpolate(frame, [36, 58], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const nameX = interpolate(frame, [36, 60], [16, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  // ── "✦ Get started" line (ref: "✦ Get started" in green → gold) ──────────────
+  const ctaLineOpacity = interpolate(frame, [60, 82], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const ctaLineY = spring({
+    fps,
+    frame: Math.max(0, frame - 60),
+    config: { damping: 100, stiffness: 70 },
     durationInFrames: 28,
   });
-  const logoOpacity = interpolate(frame, [0, 18], [0, 1], { extrapolateRight: "clamp" });
 
-  const headlineY = spring({
-    fps, frame: Math.max(0, frame - 16),
-    config: { damping: 100, stiffness: 70 },
-    durationInFrames: 30,
-  });
-  const headlineOpacity = interpolate(frame, [16, 36], [0, 1], {
+  // ── Sub-line ──────────────────────────────────────────────────────────────────
+  const subOpacity = interpolate(frame, [82, 105], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  const subOpacity = interpolate(frame, [38, 58], [0, 1], {
+  // ── URL in mono ───────────────────────────────────────────────────────────────
+  const urlOpacity = interpolate(frame, [105, 128], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-
-  const btnScale = spring({
-    fps, frame: Math.max(0, frame - 52),
-    config: { damping: 75, stiffness: 110 },
-    durationInFrames: 26,
-  });
-  const btnOpacity = interpolate(frame, [52, 68], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  const urlOpacity = interpolate(frame, [68, 90], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  // Subtle button pulse after it appears
-  const btnPulse = frame > 80 ? Math.sin((frame - 80) * 0.08) * 0.03 + 1 : 1;
 
   return (
     <AbsoluteFill>
-      <Background accentX={0.5} accentY={0.42} />
+      <Background variant="strong" />
 
-      {/* Central radial wash */}
+      {/* Central gold radial wash — ref's dramatic final glow */}
       <AbsoluteFill
         style={{
-          background:
-            "radial-gradient(ellipse 75% 60% at 50% 50%, rgba(124,58,237,0.14) 0%, transparent 70%)",
+          background: `radial-gradient(ellipse 70% 55% at 50% 50%,
+            rgba(232,184,73,${0.12 * glowScale}) 0%,
+            transparent 68%
+          )`,
           pointerEvents: "none",
         }}
       />
@@ -78,100 +91,131 @@ export const CTAScene: React.FC = () => {
           fontFamily,
         }}
       >
-        {/* Logo */}
+        {/* ── Logo — tiny → large (ref: tiny star → grows) ──────────── */}
         <div
           style={{
             opacity: logoOpacity,
-            transform: `scale(${0.45 + logoScale * 0.55})`,
-            marginBottom: 30,
+            transform: `scale(${0.06 + logoScale * 0.94})`,
+            marginBottom: 28,
           }}
         >
           <div
             style={{
-              width: 80,
-              height: 80,
-              borderRadius: 20,
+              width: 88,
+              height: 88,
+              borderRadius: 22,
               background: `linear-gradient(135deg, ${C.p} 0%, ${C.b} 100%)`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 36,
-              boxShadow: `0 0 70px rgba(124,58,237,0.55), 0 0 140px rgba(124,58,237,0.2)`,
+              fontSize: 40,
+              boxShadow: `
+                0 0 0 1px rgba(232,184,73,0.45),
+                0 0 60px rgba(232,184,73,0.55),
+                0 0 130px rgba(232,184,73,0.22)
+              `,
             }}
           >
             {CONTENT.logoEmoji}
           </div>
         </div>
 
-        {/* Headline */}
+        {/* ── Company name — large, slides in (ref: "Doks.ai") ─────── */}
         <div
           style={{
-            opacity: headlineOpacity,
-            transform: `translateY(${(1 - headlineY) * 22}px)`,
-            marginBottom: 14,
+            opacity: nameOpacity,
+            transform: `translateX(${nameX}px)`,
+            marginBottom: 22,
           }}
         >
-          <h2
+          <h1
             style={{
-              fontSize: 72,
+              fontSize: 88,
               fontWeight: 900,
-              color: C.w,
               margin: 0,
-              letterSpacing: "-2.5px",
+              letterSpacing: "-4px",
               textAlign: "center",
-              lineHeight: 1.05,
+              background: `linear-gradient(135deg, #FFFFFF 0%, ${C.pLight} 50%, ${C.b} 100%)`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            {CONTENT.company}
+          </h1>
+        </div>
+
+        {/* ── "✦ Get started" line (ref: "✦ Get started" in gold) ──── */}
+        <div
+          style={{
+            opacity: ctaLineOpacity,
+            transform: `translateY(${(1 - ctaLineY) * 16}px)`,
+            marginBottom: 20,
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <span
+            style={{
+              fontSize: 22,
+              color: C.p,
+              textShadow: `0 0 16px rgba(232,184,73,0.7)`,
+            }}
+          >
+            ✦
+          </span>
+          <span
+            style={{
+              fontSize: 22,
+              fontWeight: 600,
+              color: C.p,
+              letterSpacing: "-0.3px",
             }}
           >
             {CONTENT.cta.headline}
-          </h2>
+          </span>
         </div>
 
-        {/* Sub */}
-        <div style={{ opacity: subOpacity, marginBottom: 42 }}>
-          <p style={{ fontSize: 20, color: C.w65, margin: 0, textAlign: "center" }}>
+        {/* ── Sub-line ─────────────────────────────────────────────── */}
+        <div style={{ opacity: subOpacity, marginBottom: 28 }}>
+          <p
+            style={{
+              fontSize: 16,
+              color: C.w65,
+              margin: 0,
+              textAlign: "center",
+              letterSpacing: "0.01em",
+            }}
+          >
             {CONTENT.cta.sub}
           </p>
         </div>
 
-        {/* CTA button */}
-        <div
-          style={{
-            opacity: btnOpacity,
-            transform: `scale(${(0.65 + btnScale * 0.35) * btnPulse})`,
-            marginBottom: 30,
-          }}
-        >
+        {/* ── URL — mono, subtle (ref: minimal domain text) ─────────── */}
+        <div style={{ opacity: urlOpacity }}>
           <div
             style={{
-              padding: "20px 52px",
-              borderRadius: 14,
-              background: `linear-gradient(135deg, ${C.p} 0%, ${C.b} 100%)`,
-              fontSize: 22,
-              fontWeight: 700,
-              color: C.w,
-              letterSpacing: "-0.3px",
-              boxShadow: `0 8px 40px rgba(124,58,237,0.55), 0 0 90px rgba(124,58,237,0.22)`,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "9px 20px",
+              borderRadius: 100,
+              background: "rgba(232,184,73,0.06)",
+              border: `1px solid rgba(232,184,73,0.22)`,
             }}
           >
-            Start Free Trial →
+            <span
+              style={{
+                fontSize: 15,
+                color: C.p,
+                fontFamily: "monospace",
+                letterSpacing: "0.06em",
+                fontWeight: 500,
+              }}
+            >
+              {CONTENT.cta.url}
+            </span>
           </div>
-        </div>
-
-        {/* URL */}
-        <div style={{ opacity: urlOpacity }}>
-          <p
-            style={{
-              fontSize: 18,
-              color: C.w40,
-              fontFamily: "monospace",
-              margin: 0,
-              letterSpacing: "0.06em",
-            }}
-          >
-            {CONTENT.cta.url}
-          </p>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
