@@ -9,10 +9,23 @@ import {
 } from "../../types/constants";
 import { Main } from "./MyComp/Main";
 import { NextLogo } from "./MyComp/NextLogo";
+import { SaaSPromo } from "./SaaSPromo";
+import { FPS, TOTAL_FRAMES } from "./SaaSPromo/config";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* ── SaaS Promo Video (main composition) ────────────────────── */}
+      <Composition
+        id="SaaSPromo"
+        component={SaaSPromo}
+        durationInFrames={TOTAL_FRAMES}
+        fps={FPS}
+        width={1920}
+        height={1080}
+      />
+
+      {/* ── Original template compositions ─────────────────────────── */}
       <Composition
         id={COMP_NAME}
         component={Main}
