@@ -8,6 +8,8 @@ import {
 } from "remotion";
 import { fontFamily, loadFont } from "@remotion/google-fonts/Inter";
 import { Background } from "../components/Background";
+import { RippleRings } from "../components/RippleRings";
+import { GeometricCorners } from "../components/GeometricCorners";
 import { C, CONTENT } from "../config";
 
 loadFont("normal", { subsets: ["latin"], weights: ["400", "700", "900"] });
@@ -54,6 +56,12 @@ export const SolutionScene: React.FC = () => {
   return (
     <AbsoluteFill style={{ opacity: exitOpacity }}>
       <Background variant="strong" />
+
+      {/* Ripple rings pulse outward from center (ref frame 2 signature) */}
+      <RippleRings startFrame={8} count={5} cycleDuration={72} opacity={0.28} widthPct={0.55} heightPct={0.42} />
+
+      {/* Corner accents appear with headline */}
+      <GeometricCorners startFrame={22} opacity={0.50} />
 
       {/* Central gold radial glow — expands as logo scales in */}
       <AbsoluteFill

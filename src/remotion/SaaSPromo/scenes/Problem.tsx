@@ -8,6 +8,7 @@ import {
 } from "remotion";
 import { fontFamily, loadFont } from "@remotion/google-fonts/Inter";
 import { Background } from "../components/Background";
+import { GeometricCorners } from "../components/GeometricCorners";
 import { C, CONTENT } from "../config";
 
 loadFont("normal", { subsets: ["latin"], weights: ["400", "600", "700", "900"] });
@@ -129,6 +130,9 @@ export const ProblemScene: React.FC = () => {
   return (
     <AbsoluteFill style={{ opacity: exitOpacity }}>
       <Background />
+
+      {/* Corner accents fade in with headline */}
+      <GeometricCorners startFrame={10} opacity={0.40} armLength={68} />
 
       <AbsoluteFill
         style={{

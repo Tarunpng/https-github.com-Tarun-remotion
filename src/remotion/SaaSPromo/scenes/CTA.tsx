@@ -8,6 +8,8 @@ import {
 } from "remotion";
 import { fontFamily, loadFont } from "@remotion/google-fonts/Inter";
 import { Background } from "../components/Background";
+import { RippleRings } from "../components/RippleRings";
+import { GeometricCorners } from "../components/GeometricCorners";
 import { C, CONTENT } from "../config";
 
 loadFont("normal", { subsets: ["latin"], weights: ["400", "600", "700", "900"] });
@@ -70,6 +72,12 @@ export const CTAScene: React.FC = () => {
   return (
     <AbsoluteFill>
       <Background variant="strong" />
+
+      {/* Ripple rings for dramatic CTA entrance (ref: final scene rings) */}
+      <RippleRings startFrame={0} count={5} cycleDuration={90} opacity={0.32} widthPct={0.62} heightPct={0.48} />
+
+      {/* Corner accents appear as CTA line fades in */}
+      <GeometricCorners startFrame={60} opacity={0.60} armLength={90} />
 
       {/* Central gold radial wash — ref's dramatic final glow */}
       <AbsoluteFill

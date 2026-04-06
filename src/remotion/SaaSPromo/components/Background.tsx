@@ -1,6 +1,8 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
 import { C } from "../config";
+import { FloatingParticles } from "./FloatingParticles";
+import { GrainOverlay } from "./GrainOverlay";
 
 interface BackgroundProps {
   accentX?: number;
@@ -79,6 +81,12 @@ export const Background: React.FC<BackgroundProps> = ({
           pointerEvents: "none",
         }}
       />
+
+      {/* ── Floating gold particles (ref: subtle ambient particles) ─ */}
+      <FloatingParticles globalOpacity={variant === "strong" ? 0.75 : 0.45} />
+
+      {/* ── Film grain (ref: cinematic texture throughout) ─────────── */}
+      <GrainOverlay opacity={0.04} />
     </AbsoluteFill>
   );
 };

@@ -8,6 +8,7 @@ import {
 } from "remotion";
 import { fontFamily, loadFont } from "@remotion/google-fonts/Inter";
 import { Background } from "../components/Background";
+import { GeometricCorners } from "../components/GeometricCorners";
 import { MockupDashboard, MockupType } from "../components/MockupDashboard";
 import { MockupPhone, PhoneMockupType } from "../components/MockupPhone";
 import { C } from "../config";
@@ -164,6 +165,9 @@ export const FeatureScene: React.FC<FeatureSceneProps> = ({
   return (
     <AbsoluteFill style={{ opacity: exitOpacity }}>
       <Background variant="default" />
+
+      {/* Geometric corner accents (ref frame 3 signature effect) */}
+      <GeometricCorners startFrame={30} opacity={0.45} armLength={72} />
 
       <AbsoluteFill
         style={{

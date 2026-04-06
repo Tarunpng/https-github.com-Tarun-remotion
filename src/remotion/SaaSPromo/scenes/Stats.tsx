@@ -8,6 +8,8 @@ import {
 } from "remotion";
 import { fontFamily, loadFont } from "@remotion/google-fonts/Inter";
 import { Background } from "../components/Background";
+import { GeometricCorners } from "../components/GeometricCorners";
+import { RippleRings } from "../components/RippleRings";
 import { CountUp } from "../components/CountUp";
 import { C, CONTENT } from "../config";
 
@@ -55,6 +57,12 @@ export const StatsScene: React.FC = () => {
   return (
     <AbsoluteFill style={{ opacity: exitOpacity }}>
       <Background variant="strong" />
+
+      {/* Subtle rings pulse from center during the stats reveal */}
+      <RippleRings startFrame={20} count={3} cycleDuration={100} opacity={0.18} widthPct={0.70} heightPct={0.54} />
+
+      {/* Corner accents appear immediately */}
+      <GeometricCorners startFrame={0} opacity={0.42} armLength={70} />
 
       <AbsoluteFill
         style={{
